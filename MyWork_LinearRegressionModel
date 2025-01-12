@@ -1,0 +1,83 @@
+pacman::p_load(pacman, rio )
+data <- import("C:/Users/kayka/OneDrive/Documents/forestfires.csv")
+head(forestfires)
+tail(forestfires)
+summary(forestfires)
+sum(duplicated(data))
+duplicates <-data[!duplicated(data),]
+print(duplicates)
+library(dplyr)
+duplicates <- forestfires %>%
+  filter(duplicated(.))
+print(duplicates)
+data_no_na <- na.omit(duplicates)
+data_unique <- duplicates %>% distinct()
+month_conversion <- c("jan" = 1, "feb" = 2, "mar" = 3, "apr" = 4, "may" = 5, "jun" = 6, 
+                      "jul" = 7, "aug" = 8, "sep" = 9, "oct" = 10, "nov" = 11, "dec" = 12)
+day_conversion <- c("mon" = 1, "tue" = 2, "wed" = 3, "thu" = 4, "fri" = 5, "sat" = 6, "sun" = 7)
+data$month <- month_conversion[data$month]
+data$day <- day_conversion[data$day]
+plot(forestfires)
+library(ggplot2)
+library(dplyr)
+fires_by_month <- forestfires %>%
+  group_by(month) %>%
+  summarize(total_fires = n())
+fires_by_month %>% 
+  ggplot(aes(x = month, y = total_fires)) +
+  geom_col() +
+  labs(
+    title = "Number of forest fires in data by month",
+    y = "Fire count",
+    x = "Month"
+  )
+fires_by_day <- forestfires%>%
+  group_by(day)%>%
+  summarize(total_fires =n())
+fires_by_day%>% 
+  ggplot(aes(x=day, y=total_fires))+
+  geom_col()
+library(tidyr)
+forest_fires_long <- forestfires %>% 
+  pivot_longer(
+    cols = c("FFMC", "DMC", "DC", 
+             "ISI", "temp", "RH", 
+             "wind", "rain"),
+    names_to = "data_col",
+    values_to = "value"
+  )
+ggplot(data, aes(x = month, y = day, color = Variable)) +
+  geom_abline()
+facet_wrap(vars(data_col), scales = "free_y")
+labs(
+  title = "Variable Changes Over Month",
+  x = "Month",
+  y = "Value"
+)
+data$log_area <- log1p(data$area)
+correlation_matrix<-cor(data)
+print(correlation_matrix)
+set.seed(123)
+splitIndex <- createDataPartition(data$log_area, p = 0.8, list = FALSE)
+train_data <- data[splitIndex, ]
+test_data <- data[-splitIndex, ]
+lm_model <- lm(log_area ~ ., data = train_data)
+summary(lm_model)
+rf_model <- randomForest(log_area ~ ., data = train_data)
+print(rf_model)
+lm_predictions <- predict(lm_model, newdata = test_data)
+rf_predictions <- predict(rf_model, newdata = test_data)
+lm_rmse <- rmse(test_data$log_area, lm_predictions)
+rf_rmse <- rmse(test_data$log_area, rf_predictions)
+cat("Linear Regression RMSE:", lm_rmse, "\n")
+cat("Random Forest RMSE:", rf_rmse, "\n")
+importance(rf_model)
+varImpPlot(rf_model)
+cat("Model Performance Summary:\n")
+cat("Linear Regression RMSE:", lm_rmse, "\n")
+cat("Random Forest RMSE:", rf_rmse, "\n")
+
+
+
+#This script may have and extra line or two. one. To find and delete duplicates. two. double checking I was using the right file name.
+Any feedback is appreciated. Thank you so much for your time to view this. 
