@@ -1,0 +1,657 @@
+> pacman::p_load(pacman, rio )
+> data <- import("C:\Users\kayka\OneDrive\Documents\forestfires.csv")
+Error: '\U' used without hex digits in character string (<input>:1:20)
+> data <- import("C:/Users/kayka/OneDrive/Documents/forestfires.csv")
+> head(forestfires)
+# A tibble: 6 × 13
+      X     Y month   day  FFMC   DMC    DC   ISI  temp    RH  wind
+  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+1     7     5     3     5  86.2  26.2  94.3   5.1   8.2    51   6.7
+2     7     4    10     2  90.6  35.4 669.    6.7  18      33   0.9
+3     7     4    10     6  90.6  43.7 687.    6.7  14.6    33   1.3
+4     8     6     3     5  91.7  33.3  77.5   9     8.3    97   4  
+5     8     6     3     7  89.3  51.3 102.    9.6  11.4    99   1.8
+6     8     6     8     7  92.3  85.3 488    14.7  22.2    29   5.4
+# ℹ 2 more variables: rain <dbl>, area <dbl>
+> tail(forestfires)
+# A tibble: 6 × 13
+      X     Y month   day  FFMC   DMC    DC   ISI  temp    RH  wind
+  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+1     8     6     8     7  81.6  56.7  666.   1.9  27.8    35   2.7
+2     4     3     8     7  81.6  56.7  666.   1.9  27.8    32   2.7
+3     2     4     8     7  81.6  56.7  666.   1.9  21.9    71   5.8
+4     7     4     8     7  81.6  56.7  666.   1.9  21.2    70   6.7
+5     1     4     8     6  94.4 146    615.  11.3  25.6    42   4  
+6     6     3    11     2  79.5   3    107.   1.1  11.8    31   4.5
+# ℹ 2 more variables: rain <dbl>, area <dbl>
+> summary(forestfires)
+       X               Y           month       
+ Min.   :1.000   Min.   :2.0   Min.   : 1.000  
+ 1st Qu.:3.000   1st Qu.:4.0   1st Qu.: 7.000  
+ Median :4.000   Median :4.0   Median : 8.000  
+ Mean   :4.669   Mean   :4.3   Mean   : 7.476  
+ 3rd Qu.:7.000   3rd Qu.:5.0   3rd Qu.: 9.000  
+ Max.   :9.000   Max.   :9.0   Max.   :12.000  
+      day             FFMC      
+ Min.   :1.000   Min.   :18.70  
+ 1st Qu.:2.000   1st Qu.:90.20  
+ Median :5.000   Median :91.60  
+ Mean   :4.259   Mean   :90.64  
+ 3rd Qu.:6.000   3rd Qu.:92.90  
+ Max.   :7.000   Max.   :96.20  
+      DMC              DC       
+ Min.   :  1.1   Min.   :  7.9  
+ 1st Qu.: 68.6   1st Qu.:437.7  
+ Median :108.3   Median :664.2  
+ Mean   :110.9   Mean   :547.9  
+ 3rd Qu.:142.4   3rd Qu.:713.9  
+ Max.   :291.3   Max.   :860.6  
+      ISI              temp      
+ Min.   : 0.000   Min.   : 2.20  
+ 1st Qu.: 6.500   1st Qu.:15.50  
+ Median : 8.400   Median :19.30  
+ Mean   : 9.022   Mean   :18.89  
+ 3rd Qu.:10.800   3rd Qu.:22.80  
+ Max.   :56.100   Max.   :33.30  
+       RH              wind      
+ Min.   : 15.00   Min.   :0.400  
+ 1st Qu.: 33.00   1st Qu.:2.700  
+ Median : 42.00   Median :4.000  
+ Mean   : 44.29   Mean   :4.018  
+ 3rd Qu.: 53.00   3rd Qu.:4.900  
+ Max.   :100.00   Max.   :9.400  
+      rain              area        
+ Min.   :0.00000   Min.   :   0.00  
+ 1st Qu.:0.00000   1st Qu.:   0.00  
+ Median :0.00000   Median :   0.52  
+ Mean   :0.02166   Mean   :  12.85  
+ 3rd Qu.:0.00000   3rd Qu.:   6.57  
+ Max.   :6.40000   Max.   :1090.84  
+> sum(duplicated(data))
+[1] 4
+> data<-data[!duplicated(data),]
+> duplicates <-data[!duplicated(data),]
+> print(duplicates)
+   X Y month day FFMC   DMC    DC  ISI temp RH wind rain
+1  7 5   mar fri 86.2  26.2  94.3  5.1  8.2 51  6.7  0.0
+2  7 4   oct tue 90.6  35.4 669.1  6.7 18.0 33  0.9  0.0
+3  7 4   oct sat 90.6  43.7 686.9  6.7 14.6 33  1.3  0.0
+4  8 6   mar fri 91.7  33.3  77.5  9.0  8.3 97  4.0  0.2
+5  8 6   mar sun 89.3  51.3 102.2  9.6 11.4 99  1.8  0.0
+6  8 6   aug sun 92.3  85.3 488.0 14.7 22.2 29  5.4  0.0
+7  8 6   aug mon 92.3  88.9 495.6  8.5 24.1 27  3.1  0.0
+8  8 6   aug mon 91.5 145.4 608.2 10.7  8.0 86  2.2  0.0
+9  8 6   sep tue 91.0 129.5 692.6  7.0 13.1 63  5.4  0.0
+10 7 5   sep sat 92.5  88.0 698.6  7.1 22.8 40  4.0  0.0
+11 7 5   sep sat 92.5  88.0 698.6  7.1 17.8 51  7.2  0.0
+12 7 5   sep sat 92.8  73.2 713.0 22.6 19.3 38  4.0  0.0
+13 6 5   aug fri 63.5  70.8 665.3  0.8 17.0 72  6.7  0.0
+14 6 5   sep mon 90.9 126.5 686.5  7.0 21.3 42  2.2  0.0
+15 6 5   sep wed 92.9 133.3 699.6  9.2 26.4 21  4.5  0.0
+16 6 5   sep fri 93.3 141.2 713.9 13.9 22.9 44  5.4  0.0
+17 5 5   mar sat 91.7  35.8  80.8  7.8 15.1 27  5.4  0.0
+18 8 5   oct mon 84.9  32.8 664.2  3.0 16.7 47  4.9  0.0
+19 6 4   mar wed 89.2  27.9  70.8  6.3 15.9 35  4.0  0.0
+20 6 4   apr sat 86.3  27.4  97.1  5.1  9.3 44  4.5  0.0
+21 6 4   sep tue 91.0 129.5 692.6  7.0 18.3 40  2.7  0.0
+22 5 4   sep mon 91.8  78.5 724.3  9.2 19.1 38  2.7  0.0
+23 7 4   jun sun 94.3  96.3 200.0 56.1 21.0 44  4.5  0.0
+24 7 4   aug sat 90.2 110.9 537.4  6.2 19.5 43  5.8  0.0
+25 7 4   aug sat 93.5 139.4 594.2 20.3 23.7 32  5.8  0.0
+26 7 4   aug sun 91.4 142.4 601.4 10.6 16.3 60  5.4  0.0
+27 7 4   sep fri 92.4 117.9 668.0 12.2 19.0 34  5.8  0.0
+28 7 4   sep mon 90.9 126.5 686.5  7.0 19.4 48  1.3  0.0
+29 6 3   sep sat 93.4 145.4 721.4  8.1 30.2 24  2.7  0.0
+30 6 3   sep sun 93.5 149.3 728.6  8.1 22.8 39  3.6  0.0
+31 6 3   sep fri 94.3  85.1 692.3 15.9 25.4 24  3.6  0.0
+32 6 3   sep mon 88.6  91.8 709.9  7.1 11.2 78  7.6  0.0
+33 6 3   sep fri 88.6  69.7 706.8  5.8 20.6 37  1.8  0.0
+34 6 3   sep sun 91.7  75.6 718.3  7.8 17.7 39  3.6  0.0
+35 6 3   sep mon 91.8  78.5 724.3  9.2 21.2 32  2.7  0.0
+36 6 3   sep tue 90.3  80.7 730.2  6.3 18.2 62  4.5  0.0
+37 6 3   oct tue 90.6  35.4 669.1  6.7 21.7 24  4.5  0.0
+38 7 4   oct fri 90.0  41.5 682.6  8.7 11.3 60  5.4  0.0
+39 7 3   oct sat 90.6  43.7 686.9  6.7 17.8 27  4.0  0.0
+40 4 4   mar tue 88.1  25.7  67.6  3.8 14.1 43  2.7  0.0
+41 4 4   jul tue 79.5  60.6 366.7  1.5 23.3 37  3.1  0.0
+42 4 4   aug sat 90.2  96.9 624.2  8.9 18.4 42  6.7  0.0
+43 4 4   aug tue 94.8 108.3 647.1 17.0 16.6 54  5.4  0.0
+44 4 4   sep sat 92.5  88.0 698.6  7.1 19.6 48  2.7  0.0
+45 4 4   sep wed 90.1  82.9 735.7  6.2 12.9 74  4.9  0.0
+46 5 6   sep wed 94.3  85.1 692.3 15.9 25.9 24  4.0  0.0
+47 5 6   sep mon 90.9 126.5 686.5  7.0 14.7 70  3.6  0.0
+48 6 6   jul mon 94.2  62.3 442.9 11.0 23.0 36  3.1  0.0
+49 4 4   mar mon 87.2  23.9  64.7  4.1 11.8 35  1.8  0.0
+50 4 4   mar mon 87.6  52.2 103.8  5.0 11.0 46  5.8  0.0
+51 4 4   sep thu 92.9 137.0 706.4  9.2 20.8 17  1.3  0.0
+52 4 3   aug sun 90.2  99.6 631.2  6.3 21.5 34  2.2  0.0
+53 4 3   aug wed 92.1 111.2 654.1  9.6 20.4 42  4.9  0.0
+55 4 3   aug thu 91.7 114.3 661.3  6.3 17.6 45  3.6  0.0
+56 4 3   sep thu 92.9 137.0 706.4  9.2 27.7 24  2.2  0.0
+57 4 3   sep tue 90.3  80.7 730.2  6.3 17.8 63  4.9  0.0
+58 4 3   oct sun 92.6  46.5 691.8  8.8 13.8 50  2.7  0.0
+59 2 2   feb mon 84.0   9.3  34.0  2.1 13.9 40  5.4  0.0
+60 2 2   feb fri 86.6  13.2  43.0  5.3 12.3 51  0.9  0.0
+61 2 2   mar sun 89.3  51.3 102.2  9.6 11.5 39  5.8  0.0
+62 2 2   mar sun 89.3  51.3 102.2  9.6  5.5 59  6.3  0.0
+63 2 2   aug thu 93.0  75.3 466.6  7.7 18.8 35  4.9  0.0
+64 2 2   aug sun 90.2  99.6 631.2  6.3 20.8 33  2.7  0.0
+65 2 2   aug mon 91.1 103.2 638.8  5.8 23.1 31  3.1  0.0
+66 2 2   aug thu 91.7 114.3 661.3  6.3 18.6 44  4.5  0.0
+67 2 2   sep fri 92.4 117.9 668.0 12.2 23.0 37  4.5  0.0
+68 2 2   sep fri 92.4 117.9 668.0 12.2 19.6 33  5.4  0.0
+69 2 2   sep fri 92.4 117.9 668.0 12.2 19.6 33  6.3  0.0
+70 4 5   mar fri 91.7  33.3  77.5  9.0 17.2 26  4.5  0.0
+71 4 5   mar fri 91.2  48.3  97.8 12.5 15.8 27  7.6  0.0
+72 4 5   sep fri 94.3  85.1 692.3 15.9 17.7 37  3.6  0.0
+73 5 4   mar fri 91.7  33.3  77.5  9.0 15.6 25  6.3  0.0
+74 5 4   aug tue 88.8 147.3 614.5  9.0 17.3 43  4.5  0.0
+75 5 4   sep fri 93.3 141.2 713.9 13.9 27.6 30  1.3  0.0
+76 9 9   feb thu 84.2   6.8  26.6  7.7  6.7 79  3.1  0.0
+77 9 9   feb fri 86.6  13.2  43.0  5.3 15.7 43  3.1  0.0
+   area
+1     0
+2     0
+3     0
+4     0
+5     0
+6     0
+7     0
+8     0
+9     0
+10    0
+11    0
+12    0
+13    0
+14    0
+15    0
+16    0
+17    0
+18    0
+19    0
+20    0
+21    0
+22    0
+23    0
+24    0
+25    0
+26    0
+27    0
+28    0
+29    0
+30    0
+31    0
+32    0
+33    0
+34    0
+35    0
+36    0
+37    0
+38    0
+39    0
+40    0
+41    0
+42    0
+43    0
+44    0
+45    0
+46    0
+47    0
+48    0
+49    0
+50    0
+51    0
+52    0
+53    0
+55    0
+56    0
+57    0
+58    0
+59    0
+60    0
+61    0
+62    0
+63    0
+64    0
+65    0
+66    0
+67    0
+68    0
+69    0
+70    0
+71    0
+72    0
+73    0
+74    0
+75    0
+76    0
+77    0
+ [ reached 'max' / getOption("max.print") -- omitted 437 rows ]
+> library(dplyr)
+> duplicates <- forestfires %>%
++   filter(duplicated(.))
+> print(duplicates)
+# A tibble: 4 × 13
+      X     Y month   day  FFMC   DMC    DC   ISI  temp
+  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+1     4     3     8     3  92.1 111.  654.    9.6  20.4
+2     3     4     8     7  91.4 142.  601.   10.6  19.8
+3     4     4     3     6  91.7  35.8  80.8   7.8  17  
+4     3     6     6     5  91.1  94.1 232.    7.1  19.2
+# ℹ 4 more variables: RH <dbl>, wind <dbl>, rain <dbl>,
+#   area <dbl>
+> data_no_na <- na.omit(duplicates)
+> data_unique <- duplicates %>% distinct()
+> month_conversion <- c("jan" = 1, "feb" = 2, "mar" = 3, "apr" = 4, "may" = 5, "jun" = 6, 
++                       "jul" = 7, "aug" = 8, "sep" = 9, "oct" = 10, "nov" = 11, "dec" = 12)
+> day_conversion <- c("mon" = 1, "tue" = 2, "wed" = 3, "thu" = 4, "fri" = 5, "sat" = 6, "sun" = 7)
+> data$month <- month_conversion[data$month]
+> data$day <- day_conversion[data$day]
+> plot(data)
+> plot(forestfires)
+> library(ggplot2)
+> library(dplyr)
+> fires_by_month <- forestfires %>%
++   group_by(month) %>%
++   summarize(total_fires = n())
+> fires_by_month %>% 
++   ggplot(aes(x = month, y = total_fires)) +
++   geom_col() +
++   labs(
++     title = "Number of forest fires in data by month",
++     y = "Fire count",
++     x = "Month"
++   )
+> fires_by_day <- forestfires%>%
++   group_by(day)%>%
++   summarize(total_fires =n())
+> fires_by_day%>% 
++   ggplot(aes(x=day, y=total_fires))+
++   geom_col()
+> library(tidyr)
+> forest_fires_long <- forestfires %>% 
++   pivot_longer(
++     cols = c("FFMC", "DMC", "DC", 
++              "ISI", "temp", "RH", 
++              "wind", "rain"),
++     names_to = "data_col",
++     values_to = "value"
++   )
+> facet_wrap(vars(data_col), scale = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "Variable value"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> rlang::last_trace()
+<error/rlang_error>
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+---
+Backtrace:
+    ▆
+ 1. └─ggplot2:::`+.gg`(...)
+Run rlang::last_trace(drop = FALSE) to see 2 hidden frames.
+> rlang::last_trace(drop = FALSE)
+<error/rlang_error>
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+---
+Backtrace:
+    ▆
+ 1. └─ggplot2:::`+.gg`(...)
+ 2.   └─cli::cli_abort(...)
+ 3.     └─rlang::abort(...)
+> facet_wrap(vars(forestfires), scale = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "Variable value"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> facet_wrap(vars(fires_by_day), scale = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "Variable value"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> facet_wrap(vars(fires_by_month), scale = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "Variable value"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> rlang::last_trace()
+<error/rlang_error>
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+---
+Backtrace:
+    ▆
+ 1. └─ggplot2:::`+.gg`(...)
+Run rlang::last_trace(drop = FALSE) to see 2 hidden frames.
+> rlang::last_trace(drop = FALSE)
+<error/rlang_error>
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+---
+Backtrace:
+    ▆
+ 1. └─ggplot2:::`+.gg`(...)
+ 2.   └─cli::cli_abort(...)
+ 3.     └─rlang::abort(...)
+>   facet_wrap(vars(fires_by_month), scales = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "Variable value"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+>   facet_wrap(vars(fires_by_month), scales = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "Variable value"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> ggplot <- (data, aes(x = Month, y = Value, color = Variable)) +
+Error: unexpected ',' in "ggplot <- (data,"
+> ggplot <- data, aes(x = Month, y = Value, color = Variable)) +
+Error: unexpected ',' in "ggplot <- data,"
+> head(data)
+  X Y month day FFMC  DMC    DC  ISI temp RH wind rain
+1 7 5     3   5 86.2 26.2  94.3  5.1  8.2 51  6.7  0.0
+2 7 4    10   2 90.6 35.4 669.1  6.7 18.0 33  0.9  0.0
+3 7 4    10   6 90.6 43.7 686.9  6.7 14.6 33  1.3  0.0
+4 8 6     3   5 91.7 33.3  77.5  9.0  8.3 97  4.0  0.2
+5 8 6     3   7 89.3 51.3 102.2  9.6 11.4 99  1.8  0.0
+6 8 6     8   7 92.3 85.3 488.0 14.7 22.2 29  5.4  0.0
+  area
+1    0
+2    0
+3    0
+4    0
+5    0
+6    0
+> facet_wrap(vars(data_col), scale = "free_y") +
++   labs(
++     title = "forestfires",
++     x = "Month",
++     y = "Variable value"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> facet_wrap(vars(data_col), scale = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "Variable value"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> ggplot(data, aes(x = month, y = day, color = Variable)) +
++   geom_abline()
+> ggplot(data, aes(x = month, y = day, color = Variable)) +
++   geom_point()
+Error in `geom_point()`:
+! Problem while computing aesthetics.
+ℹ Error occurred in the 1st layer.
+Caused by error:
+! object 'Variable' not found
+Run `rlang::last_trace()` to see where the error occurred.
+> facet_wrap(vars(data_col), scale = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "day"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> facet_wrap(vars(data), scale = "free_y") +
++   labs(
++     title = "Variable changes over month",
++     x = "Month",
++     y = "day"
++   )
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+Run `rlang::last_trace()` to see where the error occurred.
+> rlang::last_trace()
+<error/rlang_error>
+Error in `+.gg`:
+! Cannot add <ggproto> objects together.
+ℹ Did you forget to add this object to a <ggplot> object?
+---
+Backtrace:
+    ▆
+ 1. └─ggplot2:::`+.gg`(...)
+Run rlang::last_trace(drop = FALSE) to see 2 hidden frames.
+> ggplot(data, aes(x = month, y = day, color = Variable)) +
++   geom_abline()
+> labs(
++   title = "Variable Changes Over Month",
++   x = "Month",
++   y = "Value"
++ )
+$x
+[1] "Month"
+
+$y
+[1] "Value"
+
+$title
+[1] "Variable Changes Over Month"
+
+attr(,"class")
+[1] "labels"
+> data$log_area <- log1p(data$area)
+> correlation_matrix<-cor(data)
+> print(correlation_matrix)
+                    X            Y       month
+X         1.000000000  0.542705187 -0.06694213
+Y         0.542705187  1.000000000 -0.06538281
+month    -0.066942131 -0.065382810  1.00000000
+day      -0.022519899 -0.006671832 -0.04783161
+FFMC     -0.020499348 -0.045979485  0.29342782
+DMC      -0.048860846  0.008210318  0.46436096
+DC       -0.088800650 -0.098496470  0.86786516
+ISI       0.006033283 -0.023141545  0.18569632
+temp     -0.051069682 -0.023870628  0.36913372
+RH        0.083756771  0.062587153 -0.10017478
+wind      0.020868719 -0.019536635 -0.08515988
+rain      0.065176410  0.033313375  0.01318679
+area      0.062929756  0.045168319  0.05762273
+log_area  0.060574434  0.040032072  0.12124690
+                   day        FFMC          DMC
+X        -0.0225198992 -0.02049935 -0.048860846
+Y        -0.0066718324 -0.04597948  0.008210318
+month    -0.0478316125  0.29342782  0.464360964
+day       1.0000000000 -0.04160644  0.063998892
+FFMC     -0.0416064406  1.00000000  0.383640837
+DMC       0.0639988917  0.38364084  1.000000000
+DC        0.0040540822  0.33293577  0.681740870
+ISI       0.0330081188  0.53208256  0.304584794
+temp      0.0527476960  0.43160883  0.469589658
+RH        0.0952241989 -0.30082659  0.071711093
+wind      0.0301987655 -0.02920834 -0.105110658
+rain     -0.0482061660  0.05680639  0.074779951
+area      0.0233150653  0.04023212  0.073783263
+log_area -0.0007934158  0.04715474  0.071647562
+                   DC          ISI        temp
+X        -0.088800650  0.006033283 -0.05106968
+Y        -0.098496470 -0.023141545 -0.02387063
+month     0.867865164  0.185696323  0.36913372
+day       0.004054082  0.033008119  0.05274770
+FFMC      0.332935775  0.532082561  0.43160883
+DMC       0.681740870  0.304584794  0.46958966
+DC        1.000000000  0.228168411  0.49758422
+ISI       0.228168411  1.000000000  0.39421686
+temp      0.497584216  0.394216858  1.00000000
+RH       -0.044066777 -0.133362928 -0.52867010
+wind     -0.203009592  0.106824612 -0.22761813
+rain      0.035689918  0.067663945  0.06952631
+area      0.050313421  0.008411188  0.09822165
+log_area  0.072024938 -0.009467343  0.05549493
+                  RH        wind         rain
+X         0.08375677  0.02086872  0.065176410
+Y         0.06258715 -0.01953663  0.033313375
+month    -0.10017478 -0.08515988  0.013186794
+day       0.09522420  0.03019877 -0.048206166
+FFMC     -0.30082659 -0.02920834  0.056806389
+DMC       0.07171109 -0.10511066  0.074779951
+DC       -0.04406678 -0.20300959  0.035689918
+ISI      -0.13336293  0.10682461  0.067663945
+temp     -0.52867010 -0.22761813  0.069526311
+RH        1.00000000  0.07143292  0.099615870
+wind      0.07143292  1.00000000  0.061478982
+rain      0.09961587  0.06147898  1.000000000
+area     -0.07545951  0.01269920 -0.007418255
+log_area -0.05192977  0.06816236  0.023307004
+                 area      log_area
+X         0.062929756  0.0605744339
+Y         0.045168319  0.0400320722
+month     0.057622731  0.1212469024
+day       0.023315065 -0.0007934158
+FFMC      0.040232120  0.0471547356
+DMC       0.073783263  0.0716475624
+DC        0.050313421  0.0720249383
+ISI       0.008411188 -0.0094673428
+temp      0.098221653  0.0554949294
+RH       -0.075459515 -0.0519297745
+wind      0.012699204  0.0681623562
+rain     -0.007418255  0.0233070037
+area      1.000000000  0.5248286127
+log_area  0.524828613  1.0000000000
+> set.seed(123)
+> splitIndex <- createDataPartition(data$log_area, p = 0.8, list = FALSE)
+> train_data <- data[splitIndex, ]
+> test_data <- data[-splitIndex, ]
+> lm_model <- lm(log_area ~ ., data = train_data)
+> summary(lm_model)
+
+Call:
+lm(formula = log_area ~ ., data = train_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.5973 -0.8979 -0.4525  0.8739  2.5473 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.1536518  1.6722425   0.092   0.9268    
+X            0.0121141  0.0298919   0.405   0.6855    
+Y            0.0044582  0.0545672   0.082   0.9349    
+month        0.1256332  0.0573020   2.192   0.0289 *  
+day         -0.0060179  0.0277230  -0.217   0.8283    
+FFMC         0.0029530  0.0180281   0.164   0.8700    
+DMC          0.0003805  0.0014103   0.270   0.7874    
+DC          -0.0006994  0.0006563  -1.066   0.2873    
+ISI         -0.0155314  0.0159174  -0.976   0.3298    
+temp        -0.0029661  0.0159858  -0.186   0.8529    
+RH          -0.0020125  0.0050437  -0.399   0.6901    
+wind         0.0327831  0.0342238   0.958   0.3387    
+rain         0.1462300  0.1747333   0.837   0.4032    
+area         0.0177824  0.0012969  13.711   <2e-16 ***
+---
+Signif. codes:  
+0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.135 on 398 degrees of freedom
+Multiple R-squared:  0.3489,	Adjusted R-squared:  0.3276 
+F-statistic:  16.4 on 13 and 398 DF,  p-value: < 2.2e-16
+
+> rf_model <- randomForest(log_area ~ ., data = train_data)
+> print(rf_model)
+
+Call:
+ randomForest(formula = log_area ~ ., data = train_data) 
+               Type of random forest: regression
+                     Number of trees: 500
+No. of variables tried at each split: 4
+
+          Mean of squared residuals: 0.104212
+                    % Var explained: 94.55
+> lm_predictions <- predict(lm_model, newdata = test_data)
+> rf_predictions <- predict(rf_model, newdata = test_data)
+> lm_rmse <- rmse(test_data$log_area, lm_predictions)
+> rf_rmse <- rmse(test_data$log_area, rf_predictions)
+> cat("Linear Regression RMSE:", lm_rmse, "\n")
+Linear Regression RMSE: 1.670814 
+> cat("Random Forest RMSE:", rf_rmse, "\n")
+Random Forest RMSE: 0.4254481 
+> importance(rf_model)
+      IncNodePurity
+X         11.315176
+Y         10.175483
+month      7.498617
+day        7.145811
+FFMC      14.911389
+DMC       20.021325
+DC        16.795381
+ISI       15.295497
+temp      25.960189
+RH        17.083907
+wind      15.867318
+rain       0.276396
+area     610.621025
+> varImpPlot(rf_model)
+> importance(rf_model)
+      IncNodePurity
+X         11.315176
+Y         10.175483
+month      7.498617
+day        7.145811
+FFMC      14.911389
+DMC       20.021325
+DC        16.795381
+ISI       15.295497
+temp      25.960189
+RH        17.083907
+wind      15.867318
+rain       0.276396
+area     610.621025
+> cat("Model Performance Summary:\n")
+Model Performance Summary:
+> cat("Linear Regression RMSE:", lm_rmse, "\n")
+Linear Regression RMSE: 1.670814 
+> cat("Random Forest RMSE:", rf_rmse, "\n")
+Random Forest RMSE: 0.4254481 
+> 
+
+
+#I copied and printed the output I was getting, becuase it include my mistakes and the code that helped me get through.
+If you see that there was a quicker or better or even another way:) please leave a comment or post with your feedback.
+It matters:) 
+Thank you for your time. 
