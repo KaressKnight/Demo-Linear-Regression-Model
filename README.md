@@ -1,4 +1,7 @@
 # Demo-Linear-Regression-Model
+Linear regression is a statistical method used to model the relationship between one dependent variable (target or outcome) and one or more independent variables (predictors or features). It helps you understand, predict, and quantify the strength of these relationships.!(https://github.com/user-attachments/assets/8b12e03a-331c-4662-9592-e0457941b232)
+
+
 #Thank you for your time. This project is inspired by a linear regression model. 
 #I want to invite you to follow me for more projects post and to follow me on my journey to 
 #becoming an exceptional security engineer. 
